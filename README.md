@@ -144,6 +144,8 @@ Log in to your Okta Developer account (or sign up https://developer.okta.com/sig
 
 You'll have to add https://getpostman.com/oauth2/callback as well to allow for Postman to call on your service. 
 
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Okta%20-%20App%20setup.png)
+
 In case you need to the Auth URL and Access token URL as well, go to your default authorization server:
 https://{yourdomain}.okta.com/oauth2/default/.well-known/oauth-authorization-server
 
@@ -193,12 +195,27 @@ http://localhost:8080/home
 
 
 ### Testing
-
-![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20PUT.png)
-![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20GET.png)
+To test with Postman, an access token request has to be made. 
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20Access%20Token%20Request.png)
-![Image description](https://github.com/gonziilla/myretail/blob/master/images/Okta%20-%20App%20setup.png)
-![Image description](https://github.com/gonziilla/myretail/blob/master/images/MongoDB%20after%20PUT.png)
+
+Using the token requested, a simple GET request is done as follows
+
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20GET.png)
+
+For PUT requests, Product information regarding price should be included in the payload in the following format:
+```
+{
+    "currentPrice": {
+        "currencyCode": "USD",
+        "value": "100000.49"
+    }
+}
+```
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20PUT.png)
+
+
+During testing of payload, I verified the updated entry in MongoDb:
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/MongoDB%20after%20PUT.png)
+
 
 
