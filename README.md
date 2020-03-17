@@ -21,32 +21,16 @@ BONUS: Accepts an HTTP PUT request at the same path (/products/{id}), containing
 *****************************************************************************************************************************
 
 
-Please be prepared to talk about:
-•    What made you pick this code?
-
-•    Why did you choose this framework?
-
-•    How did your solution for this problem evolve over time?
-
-•    What was the biggest challenge related to solving this problem?Please ensure you submit several examples so that we can see  the following in your code submissions:
-
-•    Completeness:  Were problems addressed, did the code run?  Is it production ready (if not, explain why)
-
-•    Do you have any examples of design work?
-
-•    Have you done any work where you have had to scale your code?
-
-•    Testing—how did you test?
-
-*****************************************************************************************************************************
-
 # MyRetail solution
 
 My solution uses two microservices. For that here are some things I considered:
 
 1. The redsky service is internal. The solution assumes that it is "secure" since it could be deployed in a VPC that isn't available to the outside world. Since I can't pass credentials to it directly, I wrapped it in a service called product-name-service to simulate the security solution. Users cannot call this service directly.
 
-2. The product gateway service exposes APIs to allow for PUT and GET requests. Since it is the gateway, it makes the calls to the product-name-service. This service also directly persists data using a nosql database. 
+2. The product gateway service exposes APIs to allow for PUT and GET requests. Since it is the gateway, it makes the calls to the product-name-service (and could potentially call other other services in the future. 
+
+This service persists data using MongoDb. Dummy data is written to the MongoDb instance during application startup. 
+
 
 
 ## Project setup
@@ -56,7 +40,7 @@ I created three projects.
 
 •   product-name-service - this is a service that calls on the redsky service directly. This accepts GET requests from the gateway.
 
-•   product-gateway - this is a service accepts the PUT and GET request from the user.
+•   product-gateway - this is a service accepts the PUT and GET request from the user. 
 
 
 
@@ -75,12 +59,13 @@ http https://start.spring.io/starter.zip \
   dependencies==cloud-eureka,cloud-feign,data-jpa,h2,data-rest,web,cloud-hystrix,lombok | tar -xzvf -
 ```
   
+*****************************************************************************************************************************
 
 ## Tech stack
 
 ### Spring Boot: 
 https://start.spring.io/
-Includes Maven (wrapper), Mockito, code convenience like Lombok, other dependencies.
+Includes Maven (wrapper), Mockito, Lombok, other dependencies.
 
 ### Service discovery with Netflix Eureka
 https://cloud.spring.io/spring-cloud-netflix/
@@ -96,20 +81,27 @@ Hystrix makes it possible to add failover capabilities to the Feign clients we'l
 https://github.com/Netflix/Hystrix
 
 ### MongoDB:
-Our nosql document database
+Our nosql document database which is HA
+
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install
+
 The app will be using the default, unsecure connection below:
 spring.data.mongodb.uri=mongodb://localhost:27017/productsdb
+
+The database called productsdb was created through mongo CLI
   
 ### Testing using Mokito, Junit and Postman
 https://site.mockito.org/
 
 https://www.postman.com/
 
+(all unit tests can be run per project using ./mvnw test)
+
 ### Zuul
 https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html
 
 
+*****************************************************************************************************************************
 
 ## Application flow
 The product-gateway uses Feign to talk to the downstream product-name-service. If the product-name-service is not available, it will use the failover method provided using Hystrix. 
@@ -129,7 +121,7 @@ In each project path, run each service (./mvnw spring-boot:run)
 Verify through Eureka that both services are alive:
 http://localhost:8761/
 
-
+*****************************************************************************************************************************
 
 ## Security using okta
 I’ve configured security in this microservices architecture using OAuth 2.0 and OIDC thru Okta.
@@ -144,7 +136,9 @@ Log in to your Okta Developer account (or sign up https://developer.okta.com/sig
 
 You'll have to add https://getpostman.com/oauth2/callback as well to allow for Postman to call on your service. 
 
-In case you need to the Auth URL and Access token URL as well, go to your default authorization server:
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Okta%20-%20App%20setup.png)
+
+In case you need to get the Auth URL and Access token URL for testing, go to your default authorization server:
 https://{yourdomain}.okta.com/oauth2/default/.well-known/oauth-authorization-server
 
 4. Once the Application is created, add yourself as a member of the application in the Assignments tab. 
@@ -157,6 +151,7 @@ okta.oauth2.client-id=$clientId
 okta.oauth2.client-secret=$clientSecret
 ```
 
+*****************************************************************************************************************************
 
 ### App configuration
 
@@ -191,6 +186,36 @@ Just to test that the credentials are passed on to the downstream name service, 
 http://localhost:8080/home
 
 
+*****************************************************************************************************************************
+
+### Testing
+Unit tests are available for the Service layer.
+
+To test with Postman, an access token request has to be made. 
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20Access%20Token%20Request.png)
+
+This should launch the Okta login page. Click Use Token once the token is received. 
+
+Using the token requested, a simple GET request is done as follows
+
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20GET.png)
+
+For PUT requests, Product information related to price should be included in the payload in the following format:
+```
+{
+    "currentPrice": {
+        "currencyCode": "USD",
+        "value": "100000.49"
+    }
+}
+```
+This performs an INSERT if the document does not exist. 
+
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20PUT.png)
+
+
+During testing of the (previous) payload, I verified the updated entry in MongoDb:
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/MongoDB%20after%20PUT.png)
 
 
 
