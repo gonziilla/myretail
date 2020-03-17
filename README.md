@@ -192,5 +192,13 @@ http://localhost:8080/home
 
 
 
+### Testing
+
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20PUT.png)
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20GET.png)
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20Access%20Token%20Request.png)
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Okta%20-%20App%20setup.png)
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/MongoDB%20after%20PUT.png)
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20PUT.png)
 
 
