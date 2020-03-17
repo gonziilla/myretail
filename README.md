@@ -21,23 +21,6 @@ BONUS: Accepts an HTTP PUT request at the same path (/products/{id}), containing
 *****************************************************************************************************************************
 
 
-Please be prepared to talk about:
-•    What made you pick this code?
-
-•    Why did you choose this framework?
-
-•    How did your solution for this problem evolve over time?
-
-•    What was the biggest challenge related to solving this problem?Please ensure you submit several examples so that we can see  the following in your code submissions:
-
-•    Completeness:  Were problems addressed, did the code run?  Is it production ready (if not, explain why)
-
-•    Have you done any work where you have had to scale your code?
-
-•    Testing—how did you test?
-
-*****************************************************************************************************************************
-
 # MyRetail solution
 
 My solution uses two microservices. For that here are some things I considered:
@@ -73,6 +56,7 @@ http https://start.spring.io/starter.zip \
   dependencies==cloud-eureka,cloud-feign,data-jpa,h2,data-rest,web,cloud-hystrix,lombok | tar -xzvf -
 ```
   
+*****************************************************************************************************************************
 
 ## Tech stack
 
@@ -110,6 +94,7 @@ https://www.postman.com/
 https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html
 
 
+*****************************************************************************************************************************
 
 ## Application flow
 The product-gateway uses Feign to talk to the downstream product-name-service. If the product-name-service is not available, it will use the failover method provided using Hystrix. 
@@ -129,7 +114,7 @@ In each project path, run each service (./mvnw spring-boot:run)
 Verify through Eureka that both services are alive:
 http://localhost:8761/
 
-
+*****************************************************************************************************************************
 
 ## Security using okta
 I’ve configured security in this microservices architecture using OAuth 2.0 and OIDC thru Okta.
@@ -159,6 +144,7 @@ okta.oauth2.client-id=$clientId
 okta.oauth2.client-secret=$clientSecret
 ```
 
+*****************************************************************************************************************************
 
 ### App configuration
 
@@ -193,6 +179,7 @@ Just to test that the credentials are passed on to the downstream name service, 
 http://localhost:8080/home
 
 
+*****************************************************************************************************************************
 
 ### Testing
 To test with Postman, an access token request has to be made. 
