@@ -106,11 +106,24 @@ https://site.mockito.org/
 
 https://www.postman.com/
 
+### Zuul
+https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html
+
+
 
 ## Application flow
 The product-gateway uses Feign to talk to the downstream product-name-service. If the product-name-service is not available, it will use the failover method provided using Hystrix. 
 
 Likewise, If the product-name-service is not able to talk to the redsky service, it will use the failover method provided using Hystrix so it can return a generic name. 
+
+```
+REQUEST     to    product-gateway       to        product-name-service
+------------------------------------------------------------------------------
+GET               /products/{id}                  /product-names/{id}      
+
+PUT               /products/{id}                  none
+                  {Product in Request Body}
+```
 
 In each project path, run each service (./mvnw spring-boot:run)
 Verify through Eureka that both services are alive:
@@ -171,11 +184,6 @@ In order for the gateway to pass along the access token to the name service, a r
 feign.hystrix.enabled=true
 hystrix.shareSecurityContext=true
 ```
-
-## Zuul
-
-https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html
-
 Just to test that the credentials are passed on to the downstream name service, I added a Zuul route to product-name-service's HomeController (/home).  
 
 http://localhost:8080/home
