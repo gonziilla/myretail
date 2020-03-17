@@ -200,7 +200,7 @@ For PUT requests, Product information related to price should be included in the
     }
 }
 ```
-This performs an INSERT if the document is not existing. 
+This performs an INSERT if the document does not exist. 
 
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20PUT.png)
 
