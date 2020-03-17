@@ -50,6 +50,7 @@ My solution uses two microservices. For that here are some things I considered:
 
 ## Project setup
 I created three projects. 
+
 •   discovery-service - this is a Netflix Eureka server for service discovery
 
 •   product-name-service - this is a service that calls on the redsky service directly. This accepts GET requests from the gateway.
@@ -86,6 +87,7 @@ https://cloud.spring.io/spring-cloud-netflix/
 ### Feign:
 Feign is a declarative REST Client, using tools like Jersey and CXF to write java clients for ReST or SOAP services.
 https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-feign.html
+
 https://github.com/OpenFeign/feign
  
 ### Hystrix:
@@ -98,6 +100,7 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install
   
 ### Testing using Mokito, Junit and Postman
 https://site.mockito.org/
+
 https://www.postman.com/
 
 
