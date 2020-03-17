@@ -112,6 +112,12 @@ The product-gateway uses Feign to talk to the downstream product-name-service. I
 
 Likewise, If the product-name-service is not able to talk to the redsky service, it will use the failover method provided using Hystrix so it can return a generic name. 
 
+In each project path, run each service (./mvnw spring-boot:run)
+Verify through Eureka that both services are alive:
+http://localhost:8761/
+
+
+
 ## Security using okta
 I’ve configured security in this microservices architecture using OAuth 2.0 and OIDC thru Okta.
 
