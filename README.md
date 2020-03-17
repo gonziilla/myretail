@@ -44,7 +44,7 @@ My solution uses two microservices. For that here are some things I considered:
 
 1. The redsky service is internal. The solution assumes that it is "secure" since it could be deployed in a VPC that isn't available to the outside world. Since I can't pass credentials to it directly, I wrapped it in a service called product-name-service to simulate the security solution. Users cannot call this service directly.
 
-2. The product gateway service exposes APIs to allow for PUT and GET requests. Since it is the gateway, it makes the calls to the product-name-service. This service also directly persists data using a nosql database. 
+2. The product gateway service exposes APIs to allow for PUT and GET requests. Since it is the gateway, it makes the calls to the product-name-service. This service also directly persists data using a nosql database. Dummy data is written to the Mongodb instance during application startup. 
 
 
 ## Project setup
@@ -54,7 +54,7 @@ I created three projects.
 
 •   product-name-service - this is a service that calls on the redsky service directly. This accepts GET requests from the gateway.
 
-•   product-gateway - this is a service accepts the PUT and GET request from the user.
+•   product-gateway - this is a service accepts the PUT and GET request from the user. 
 
 
 
@@ -98,6 +98,8 @@ Our nosql document database which is HA
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install
 The app will be using the default, unsecure connection below:
 spring.data.mongodb.uri=mongodb://localhost:27017/productsdb
+
+productsdb was created suing the mongo CLI
   
 ### Testing using Mokito, Junit and Postman
 https://site.mockito.org/
