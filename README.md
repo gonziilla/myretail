@@ -27,7 +27,10 @@ My solution uses two microservices. For that here are some things I considered:
 
 1. The redsky service is internal. The solution assumes that it is "secure" since it could be deployed in a VPC that isn't available to the outside world. Since I can't pass credentials to it directly, I wrapped it in a service called product-name-service to simulate the security solution. Users cannot call this service directly.
 
-2. The product gateway service exposes APIs to allow for PUT and GET requests. Since it is the gateway, it makes the calls to the product-name-service. This service also directly persists data using a nosql database. Dummy data is written to the Mongodb instance during application startup. 
+2. The product gateway service exposes APIs to allow for PUT and GET requests. Since it is the gateway, it makes the calls to the product-name-service (and could potentially call other other services in the future. 
+
+This service persists data using MongoDb. Dummy data is written to the MongoDb instance during application startup. 
+
 
 
 ## Project setup
@@ -62,7 +65,7 @@ http https://start.spring.io/starter.zip \
 
 ### Spring Boot: 
 https://start.spring.io/
-Includes Maven (wrapper), Mockito, code convenience like Lombok, other dependencies.
+Includes Maven (wrapper), Mockito, Lombok, other dependencies.
 
 ### Service discovery with Netflix Eureka
 https://cloud.spring.io/spring-cloud-netflix/
