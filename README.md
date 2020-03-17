@@ -79,16 +79,20 @@ https://github.com/Netflix/Hystrix
 
 ### MongoDB:
 Our nosql document database which is HA
+
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install
+
 The app will be using the default, unsecure connection below:
 spring.data.mongodb.uri=mongodb://localhost:27017/productsdb
 
-productsdb was created suing the mongo CLI
+The database called productsdb was created through mongo CLI
   
 ### Testing using Mokito, Junit and Postman
 https://site.mockito.org/
 
 https://www.postman.com/
+
+(all unit tests can be run per project using ./mvnw test)
 
 ### Zuul
 https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html
@@ -182,6 +186,8 @@ http://localhost:8080/home
 *****************************************************************************************************************************
 
 ### Testing
+Unit tests are available for the Service layer.
+
 To test with Postman, an access token request has to be made. 
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20Access%20Token%20Request.png)
 
