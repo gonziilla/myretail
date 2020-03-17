@@ -10,7 +10,8 @@ Responds to an HTTP GET request at /products/{id} and delivers product data as J
 Example product IDs: 15117729, 16483589, 16696652, 16752456, 15643793) 
 Example response: {"id":13860428,"name":"The Big Lebowski (Blu-ray) (Widescreen)","current_price":{"value": 13.49,"currency_code":"USD"}}
 
-Performs an HTTP GET to retrieve the product name from an external API. (For this exercise the data will come from redsky.target.com, but let’s just pretend this is an internal resource hosted by myRetail)  
+Performs an HTTP GET to retrieve the product name from an external API. (For this exercise the data will come from redsky.target.com, but let’s just pretend this is an internal resource hosted by myRetail) 
+
 Example: http://redsky.target.com/v2/pdp/tcin/13860428?excludes=taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics
 
 Reads pricing information from a NoSQL data store and combines it with the product id and name from the HTTP request into a single response. 
@@ -97,6 +98,8 @@ https://github.com/Netflix/Hystrix
 ### MongoDB:
 Our nosql document database
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install
+The app will be using the default, unsecure connection below:
+spring.data.mongodb.uri=mongodb://localhost:27017/productsdb
   
 ### Testing using Mokito, Junit and Postman
 https://site.mockito.org/
@@ -110,19 +113,66 @@ The product-gateway uses Feign to talk to the downstream product-name-service. I
 Likewise, If the product-name-service is not able to talk to the redsky service, it will use the failover method provided using Hystrix so it can return a generic name. 
 
 ## Security using okta
-All of the services are secure. 
-I’ve already configured security in this microservices architecture using OAuth 2.0 and OIDC. 
+I’ve configured security in this microservices architecture using OAuth 2.0 and OIDC thru Okta.
 
-What’s the difference between the two? OIDC is an extension to OAuth 2.0 that provides identity. It also provides discovery so all the different OAuth 2.0 endpoints can be discovered from a single URL (called an issuer).
+Log in to your Okta Developer account (or sign up https://developer.okta.com/signup/ if you don’t have an account).
+
+1. From the Applications page, choose Add Application.
+
+2. On the Create New Application page, select Web.
+
+3. Give your app a name, add http://localhost:8080/login/oauth2/code/okta as a Login redirect URI, select Refresh Token (in addition to Authorization Code), and click Done. 
+
+You'll have to add https://getpostman.com/oauth2/callback as well to allow for Postman to call on your service. In case you need to the Auth URL and Access token URL as well, go to your default authorization server:
+https://{yourdomain}.okta.com/oauth2/default/.well-known/oauth-authorization-server
+
+4. Once the Application is created, add yourself as a member of the application in the Assignments tab. 
+
+5. You'll need to update the applications.properties files in both service projects. Information about the issuer, client id and client secret will be under API -> Authorization servers. 
+
+```
+okta.oauth2.issuer=$issuer
+okta.oauth2.client-id=$clientId
+okta.oauth2.client-secret=$clientSecret
+```
 
 
-One of the things you might’ve noticed in this example is you had to configure the OIDC properties in each application. This could be a real pain if you had 500 microservices. Yes, you could define them as environment variables and this would solve the problem. However, if you have different microservices stacks using different OIDC client IDs, this approach will be difficult. For that, a solution called Spring Cloud Config can be used to configure distributed systems. 
+### App configuration
 
+The ProductGatewayApplication.java has Spring security configuration to enable OAuth 2.0 login and to enable the gateway as a resource server:
+```
+@Configuration
+static class OktaOAuth2WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
+        http
+            .authorizeRequests().anyRequest().authenticated()
+                .and()
+            .oauth2Login()
+                .and()
+            .oauth2ResourceServer().jwt();
+        // @formatter:on
+    }
+}
+```
+
+The product-name-service application will not have OAuth 2.0 login enabled but will just be a resource server. 
+In order for the gateway to pass along the access token to the name service, a request interceptor is created (see UserFeignClientInterceptor.java) and the following properties were turned on:
+
+```
+feign.hystrix.enabled=true
+hystrix.shareSecurityContext=true
+```
 
 ## Zuul
-Just to test that the credentials are passed on to the downstream name service, I added a zull route toe /home. The HomeController is available in the product-name-service. 
 
+https://cloud.spring.io/spring-cloud-netflix/multi/multi__router_and_filter_zuul.html
+
+Just to test that the credentials are passed on to the downstream name service, I added a Zuul route to product-name-service's HomeController (/home).  
+
+http://localhost:8080/home
 
 
 
