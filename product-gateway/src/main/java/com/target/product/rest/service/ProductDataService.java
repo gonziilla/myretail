@@ -19,7 +19,12 @@ public class ProductDataService {
 	@Autowired
     private ProductNameFeignClient productNameFeignClient;
 
-	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws ProductNotFoundException
+	 */
     public Product getProductWithName(String id) throws ProductNotFoundException {
     	Product product = null;
     	try {
@@ -33,6 +38,12 @@ public class ProductDataService {
     	return product;    	                
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws ProductNotFoundException
+     */
     public Product getProductWithoutName(String id) throws ProductNotFoundException {
     	Product product = null;
     	try {
@@ -46,6 +57,12 @@ public class ProductDataService {
     	return product;    	                
     }
     
+    /**
+     * 
+     * @param product
+     * @return
+     * @throws Exception
+     */
     public Product updateProduct(Product product) throws Exception {
     	return productRepository.save(product);    	    	                
     }	

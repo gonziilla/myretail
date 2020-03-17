@@ -1,5 +1,7 @@
 package com.target.product.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +18,24 @@ import com.target.product.rest.service.ProductDataService;
 
 @RestController
 public class ProductGatewayController {
-	
+	protected Logger logger = LoggerFactory.getLogger(ProductGatewayController.class);
+
 	@Autowired	
 	private ProductDataService productDataService;
 	
-	
 	@SuppressWarnings("unused")
 	private ResponseEntity<Product> fallback(String id) throws Exception {
-		System.out.println("FALLBACK CALLED");
-	    	
+		logger.info("FALLBACK CALLED");
 		Product product = productDataService.getProductWithoutName(id);
-
         return new ResponseEntity<Product>(product, HttpStatus.OK);
     }
     
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
     @GetMapping("/products/{id}")
     @CrossOrigin
     @HystrixCommand(fallbackMethod = "fallback")
@@ -38,6 +44,13 @@ public class ProductGatewayController {
     	return new ResponseEntity<Product>(product, HttpStatus.OK);    	                
     }
 
+    /**
+     * 
+     * @param product
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @PutMapping("/products/{id}")
     public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable String id) throws Exception {
     	product.setId(id);
