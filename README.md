@@ -32,8 +32,6 @@ Please be prepared to talk about:
 
 •    Completeness:  Were problems addressed, did the code run?  Is it production ready (if not, explain why)
 
-•    Do you have any examples of design work?
-
 •    Have you done any work where you have had to scale your code?
 
 •    Testing—how did you test?
@@ -96,7 +94,7 @@ Hystrix makes it possible to add failover capabilities to the Feign clients we'l
 https://github.com/Netflix/Hystrix
 
 ### MongoDB:
-Our nosql document database
+Our nosql document database which is HA
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install
 The app will be using the default, unsecure connection below:
 spring.data.mongodb.uri=mongodb://localhost:27017/productsdb
@@ -146,7 +144,7 @@ You'll have to add https://getpostman.com/oauth2/callback as well to allow for P
 
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/Okta%20-%20App%20setup.png)
 
-In case you need to the Auth URL and Access token URL as well, go to your default authorization server:
+In case you need to get the Auth URL and Access token URL for testing, go to your default authorization server:
 https://{yourdomain}.okta.com/oauth2/default/.well-known/oauth-authorization-server
 
 4. Once the Application is created, add yourself as a member of the application in the Assignments tab. 
@@ -198,11 +196,13 @@ http://localhost:8080/home
 To test with Postman, an access token request has to be made. 
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20Access%20Token%20Request.png)
 
+This should launch the Okta login page. Click Use Token once the token is received. 
+
 Using the token requested, a simple GET request is done as follows
 
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20GET.png)
 
-For PUT requests, Product information regarding price should be included in the payload in the following format:
+For PUT requests, Product information related to price should be included in the payload in the following format:
 ```
 {
     "currentPrice": {
@@ -211,10 +211,12 @@ For PUT requests, Product information regarding price should be included in the 
     }
 }
 ```
+This performs an INSERT if the document is not existing. 
+
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20PUT.png)
 
 
-During testing of payload, I verified the updated entry in MongoDb:
+During testing of the (previous) payload, I verified the updated entry in MongoDb:
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/MongoDB%20after%20PUT.png)
 
 
