@@ -217,5 +217,15 @@ This performs an INSERT if the document does not exist.
 During testing of the (previous) payload, I verified the updated entry in MongoDb:
 ![Image description](https://github.com/gonziilla/myretail/blob/master/images/MongoDB%20after%20PUT.png)
 
+#### Fallback tests
+
+Quick test when data is available in Mongodb but not in redsky:
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20GET%20Request%20when%20product%20id%20exists%20in%20mongodb%20but%20not%20in%20redsky.png)
+
+
+Quick test when the name service is down altogether
+![Image description](https://github.com/gonziilla/myretail/blob/master/images/Postman%20GET%20Request%20when%20name%20service%20is%20down.png)
+
+
 
 
