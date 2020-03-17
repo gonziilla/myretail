@@ -142,7 +142,9 @@ Log in to your Okta Developer account (or sign up https://developer.okta.com/sig
 
 3. Give your app a name, add http://localhost:8080/login/oauth2/code/okta as a Login redirect URI, select Refresh Token (in addition to Authorization Code), and click Done. 
 
-You'll have to add https://getpostman.com/oauth2/callback as well to allow for Postman to call on your service. In case you need to the Auth URL and Access token URL as well, go to your default authorization server:
+You'll have to add https://getpostman.com/oauth2/callback as well to allow for Postman to call on your service. 
+
+In case you need to the Auth URL and Access token URL as well, go to your default authorization server:
 https://{yourdomain}.okta.com/oauth2/default/.well-known/oauth-authorization-server
 
 4. Once the Application is created, add yourself as a member of the application in the Assignments tab. 
