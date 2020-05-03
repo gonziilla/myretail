@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -130,8 +129,22 @@ public class ProductDataServiceTest {
 		
 		Product result = productDataService.updateProduct(expected);
 	    
+		Mockito.verify(productRepository).getProductById(expectedId);
 	    Mockito.verify(productRepository).save(expected);
         assertEquals("Repo returned the correct id", expected.getId(), result.getId());
 	}
+	
+	@Test(expected = ProductNotFoundException.class)
+    public void testUpdateProduct_ProductDoesNotExist() throws Exception {
+		Product expected = new Product();
+	    expected.setId("999");
+
+		Mockito.when(productRepository.getProductById(Mockito.anyString())).
+			thenThrow(new ProductNotFoundException());
+
+		productDataService.updateProduct(expected);
+		
+		Mockito.verify(productRepository, Mockito.never()).save(Mockito.any());
+	}	
 	
 }

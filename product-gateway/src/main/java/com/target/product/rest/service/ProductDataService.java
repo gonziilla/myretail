@@ -61,10 +61,18 @@ public class ProductDataService {
      * 
      * @param product
      * @return
-     * @throws Exception
+     * @throws ProductNotFoundException
      */
-    public Product updateProduct(Product product) throws Exception {
-    	return productRepository.save(product);    	    	                
+    public Product updateProduct(Product product) throws ProductNotFoundException {
+    	Product result = null;
+    	try {    		
+    		productRepository.getProductById(product.getId());
+    		result = productRepository.save(product);
+		} catch (Exception e) {
+			logger.error("Getting product failed", e);
+			throw new ProductNotFoundException(e);
+		}
+    	return result;    	    	                
     }	
 }
 

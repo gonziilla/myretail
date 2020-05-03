@@ -28,7 +28,6 @@ public class ProductNameController {
 	@SuppressWarnings("unused")
 	private ResponseEntity<String> fallback(String id) throws Exception {
 		System.out.println("FALLBACK CALLED");
-    	logger.info("FALLBACK CALLED");
 		return new ResponseEntity<String>("No data available from redsky", HttpStatus.OK);
     }
     

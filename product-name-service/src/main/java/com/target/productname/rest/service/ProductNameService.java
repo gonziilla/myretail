@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.target.productname.rest.data.Product;
 import com.target.productname.rest.feign.service.RedskyClient;
@@ -38,8 +36,7 @@ public class ProductNameService {
      * 
      * @param json
      * @return
-     * @throws JsonMappingException
-     * @throws JsonProcessingException
+     * @throws JsonParseException
      * @throws IOException
      */
 	public String parseProductTitle(String json) throws JsonParseException, IOException {

@@ -22,10 +22,8 @@ public class Product {
 	@Id
 	private String id;
 	
-	@Transient //TODO Glenn : double check if need to be Transient
+	@Transient 
 	private String name;
 	
 	private Map<String, String> currentPrice;
-	
-	
 }
