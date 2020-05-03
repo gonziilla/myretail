@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.target.productname.rest.service.ProductNameService;
 
+//TODO Glenn add Controller tests
 @RestController
 public class ProductNameController {
 	protected Logger logger = LoggerFactory.getLogger(ProductNameController.class);
