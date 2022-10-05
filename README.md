@@ -81,7 +81,7 @@ Hystrix makes it possible to add failover capabilities to the Feign clients we'l
 https://github.com/Netflix/Hystrix
 
 ### MongoDB:
-Our nosql document database which is HA
+Our nosql document database
 
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install
 
